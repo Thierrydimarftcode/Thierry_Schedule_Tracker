@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@40
+
+body {
+    background-color: #0d0e15;
+    /* Grid Pattern Bergaya Pixel Arcade */
+    background-image: 
+        linear-gradient(to right, rgba(225, 29, 72, 0.1) 2px, transparent 2px),
+        linear-gradient(to bottom, rgba(225, 29, 72, 0.1) 2px, transparent 2px);
+    background-size: 16px 16px;
+    color: #f1f5f9;
+}
+
+/* Judul Pixel Retro Utama */
+.spidey-title {
+    font-family: 'Press Start 2P', cursive;
+    text-shadow: 3px 3px 0px #e11d48, -1px -1px 0px #0284c7;
+    letter-spacing: -1px;
+}
+
+/* Pixel Border Box Effect (Efek Kotak Pixel 8-Bit) */
+.pixel-box {
+    box-shadow: 
+        -4px 0 0 0 #000,
+        4px 0 0 0 #000,
+        0 -4px 0 0 #000,
+        0 4px 0 0 #000;
+    border: 2px solid #1e293b;
+}
+
+.pixel-box-red {
+    border-color: #e11d48;
+    box-shadow: 
+        -4px 0 0 0 #000,
+        4px 0 0 0 #000,
+        0 -4px 0 0 #000,
+        0 4px 0 0 #000;
+}
+
+.pixel-box-sky 
+    border-color: #0284c7;
+    box-shadow: 
+        -4px 0 0 0 #000,
+        4px 0 0 0 #000,
+        0 -4px 0 0 #000,
+        0 4px 0 0 #000;
+}
+
+/* Tombol Gaya Pixel 3D */
+.pixel-btn {
+    position: relative;
+    border: none;
+    box-shadow: 
+        inset -4px -4px 0px 0px rgba(0,0,0,0.4),
+        inset 4px 4px 0px 0px rgba(255,255,255,0.2),
+        -2px 0 0 0 #000,
+        2px 0 0 0 #000,
+        0 -2px 0 0 #000,
+        0 2px 0 0 #000;
+    transition: all 0.05s ease;
+}
+
+.pixel-btn:active {
+    box-shadow: 
+        inset 4px 4px 0px 0px rgba(0,0,0,0.4),
+        -2px 0 0 0 #000,
+        2px 0 0 0 #000,
+        0 -2px 0 0 #000,
+        0 2px 0 0 #000;
+    transform: translateY(2px);
+}
+
+/* Custom Scrollbar Pixel */
+::-webkit-scrollbar {
+    width: 10px;
+
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e11d48;
+    border: 2px solid #000;

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thierry Task & Schedule Manager</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Pixel Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap">
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen pb-12">
+
+    <!-- Header / Navbar Tema Spider-Man HUD -->
+    <header class="bg-slate-900/90 border-b border-red-600/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-red-600 rounded-lg shadow-lg shadow-red-600/50">
+                    <i data-lucide="spider" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold text-white tracking-wide spidey-title">Hi, Thierry!🕷️</h1>
+                    <p class="text-xs text-sky-400 font-medium">Welcome to your Task & Schedule Tracker</p>
+                </div>
+            </div>
+            <div id="stats-summary" class="hidden md:flex gap-4 text-xs">
+                <div class="bg-slate-950/80 px-3 py-1.5 rounded-lg border border-sky-500/30">
+                    <span class="text-slate-400">Tugas Aktif:</span> <strong id="stat-active" class="text-sky-400">0</strong>
+                </div>
+                <div class="bg-slate-950/80 px-3 py-1.5 rounded-lg border border-red-500/40">
+                    <span class="text-slate-400">Mendesak (&lt;24 Jam):</span> <strong id="stat-urgent" class="text-red-400 animate-pulse">0</strong>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- Left Column: Forms (Di HP di bawah / order-2, di Laptop di kiri / lg:order-1) -->
+    <div class="space-y-6 order-2 lg:order-1">
+            
+            <!-- Form Tambah Jadwal Pelajaran (Senin - Sabtu) -->
+            <div class="bg-slate-900/90 p-6 rounded-2xl border border-sky-500/30 shadow-xl shadow-sky-950/50">
+                <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="book-open" class="text-sky-400"></i>
+                    <h2 class="font-bold text-lg text-slate-100">Tambah Jadwal Pelajaran</h2>
+                </div>
+
+                <form id="schedule-form" onsubmit="handleAddSchedule(event)" class="space-y-4">
+            <div class="grid grid-cols-2 gap-3 items-end">
+            <div>
+                <label class="block text-xs font-medium text-sky-300 mb-1 h-8 flex items-end">Hari</label>
+                <select id="sched-day" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                <option value="Senin">Senin</option>
+                <option value="Selasa">Selasa</option>
+                <option value="Rabu">Rabu</option>
+                <option value="Kamis">Kamis</option>
+                <option value="Jumat">Jumat</option>
+                <option value="Sabtu">Sabtu</option>
+                </select>
+            </div>
+            <div>
+            <label class="block text-xs font-medium text-sky-300 mb-1 h-8 flex items-end">Jam (Mulai - Selesai)</label>
+            <input type="text" id="sched-time" required placeholder="07.00 - 09.30" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+            </div>
+        </div>
+
+        <div>
+        <label class="block text-xs font-medium text-sky-300 mb-1">Mata Pelajaran</label>
+        <input type="text" id="sched-subject" required placeholder="Contoh: MATEMATIKA" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+        </div>
+
+        <div>
+        <label class="block text-xs font-medium text-sky-300 mb-1">Guru</label>
+        <input type="text" id="sched-room" placeholder="Contoh: Pak Budi" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+        </div>
+
+        <button type="submit" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-medium py-3 rounded-xl transition shadow-lg shadow-sky-600/30 flex justify-center items-center gap-2">
+        <i data-lucide="plus" class="w-4 h-4"></i> Simpan Jadwal
+        </button>
+                </form>
+            </div>
+
+            <!-- Form Tambah Tugas -->
+            <div class="bg-slate-900/90 p-6 rounded-2xl border border-red-500/30 shadow-xl shadow-red-950/50">
+                <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="plus-circle" class="text-red-400"></i>
+                    <h2 class="font-bold text-lg text-slate-100">Tambah Tugas Sekolah</h2>
+                </div>
+
+                <form id="task-form" onsubmit="handleAddTask(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-red-300 mb-1">Judul Tugas / Modul</label>
+                        <input type="text" id="task-title" required placeholder="Contoh: HAFALAN SURAT PENDEK" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-medium text-red-300 mb-1">Mata Pelajaran</label>
+                            <select id="task-subject" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
+                                <option value="PPLG/BASIS DATA">PPLG/BASIS DATA</option>
+                                <option value="PAI">PAI</option>
+                                <option value="SEJARAH">SEJARAH</option>
+                                <option value="PEMROGAMAN WEB">PEMROGAMAN WEB</option>
+                                <option value="BAHASA JEPANG">BAHASA JEPANG</option>
+                                <option value="KEMUHAMMADIYAHAN">KEMUHAMMADIYAHAN</option>
+                                <option value="BAHASA INDONESIA">BAHASA INDONESIA</option>
+                                <option value="MATEMATIKA">MATEMATIKA</option>
+                                <option value="PENJAS">PENJAS</option>
+                                <option value="BTQ">BTQ</option>
+                                <option value="PPKN">PPKN</option>
+                                <option value="BAHASA INGGRIS">BAHASA INGGRIS</option>
+                                <option value="BAHASA ARAB">BAHASA ARAB</option>
+                                <option value="KEWIRAUSAHAAN">KEWIRAUSAHAAN</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-red-300 mb-1">Prioritas</label>
+                            <select id="task-priority" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
+                                <option value="Tinggi">🔥 Tinggi</option>
+                                <option value="Sedang" selected>⚡ Sedang</option>
+                                <option value="Rendah">🌱 Rendah</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-red-300 mb-1">Deadline / Tenggat Waktu</label>
+                        <input type="datetime-local" id="task-deadline" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
+                    </div>
+
+                    <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-medium py-3 rounded-xl transition shadow-lg shadow-red-600/30 flex justify-center items-center gap-2">
+                        <i data-lucide="check-square" class="w-4 h-4"></i> Simpan Tugas
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form Tambah Kegiatan/Acara -->
+            <div class="bg-slate-900/90 p-6 rounded-2xl border border-emerald-500/30 shadow-xl shadow-emerald-950/50">
+                <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="calendar-plus" class="text-emerald-400"></i>
+                    <h2 class="font-bold text-lg text-slate-100">Tambah Agenda / Kegiatan</h2>
+                </div>
+
+                <form id="event-form" onsubmit="handleAddEvent(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-emerald-300 mb-1">Nama Kegiatan / Acara</label>
+                        <input type="text" id="event-title" required placeholder="Contoh: Latihan Panahan, Kerja Kelompok" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-emerald-300 mb-1">Tanggal & Waktu Acara</label>
+                        <input type="datetime-local" id="event-date" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-emerald-300 mb-1">Lokasi / Catatan (Opsional)</label>
+                        <input type="text" id="event-location" placeholder="Contoh: Lab Komputer 2 / Lapangan" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-xl transition shadow-lg shadow-emerald-600/30 flex justify-center items-center gap-2">
+                        <i data-lucide="calendar-check" class="w-4 h-4"></i> Simpan Acara
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Lists -->
+        <div class="lg:col-span-2 space-y-8 order-1 lg:order-2">
+            
+            <!-- Jadwal Pelajaran (Senin - Sabtu Tabs) -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-bold text-lg flex items-center gap-2 text-slate-100">
+                        <i data-lucide="calendar-days" class="text-sky-400"></i> Jadwal Pelajaran Sekolah
+                    </h2>
+                </div>
+
+                <!-- Tab Hari Senin s/d Sabtu -->
+                <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+                    <button onclick="switchDay('Senin')" id="tab-Senin" class="day-tab text-xs px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 whitespace-nowrap transition">Senin</button>
+                    <button onclick="switchDay('Selasa')" id="tab-Selasa" class="day-tab text-xs px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 whitespace-nowrap transition">Selasa</button>
+                    <button onclick="switchDay('Rabu')" id="tab-Rabu" class="day-tab text-xs px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 whitespace-nowrap transition">Rabu</button>
+                    <button onclick="switchDay('Kamis')" id="tab-Kamis" class="day-tab text-xs px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 whitespace-nowrap transition">Kamis</button>
+                    <button onclick="switchDay('Jumat')" id="tab-Jumat" class="day-tab text-xs px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 whitespace-nowrap transition">Jumat</button>
+                    <button onclick="switchDay('Sabtu')" id="tab-Sabtu" class="day-tab text-xs px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 whitespace-nowrap transition">Sabtu</button>
+                </div>
+
+                <div id="schedule-list" class="space-y-2.5">
+                    <!-- Data Jadwal akan di render via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Daftar Tugas -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-bold text-lg flex items-center gap-2 text-slate-100">
+                        <i data-lucide="list-todo" class="text-red-400"></i> Daftar Tugas Sekolah
+                    </h2>
+                    <div class="flex gap-2">
+                        <button onclick="filterTasks('all')" class="text-xs px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700">Semua</button>
+                        <button onclick="filterTasks('pending')" class="text-xs px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-amber-400">Belum Selesai</button>
+                    </div>
+                </div>
+
+                <div id="task-list" class="space-y-3">
+                    <!-- Data Tugas akan di render via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Daftar Kegiatan / Acara -->
+        </div>
+
+    </main>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

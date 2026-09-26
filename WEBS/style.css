@@ -1,4 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@40
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap');
+
+/* Reset & Pixel Font Setup */
+* {
+    font-family: 'Silkscreen', cursive;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
 
 body {
     background-color: #0d0e15;
@@ -36,7 +43,7 @@ body {
         0 4px 0 0 #000;
 }
 
-.pixel-box-sky 
+.pixel-box-sky {
     border-color: #0284c7;
     box-shadow: 
         -4px 0 0 0 #000,
@@ -72,7 +79,7 @@ body {
 /* Custom Scrollbar Pixel */
 ::-webkit-scrollbar {
     width: 10px;
-
+}
 
 ::-webkit-scrollbar-track {
     background: #000;
@@ -81,3 +88,4 @@ body {
 ::-webkit-scrollbar-thumb {
     background: #e11d48;
     border: 2px solid #000;
+}

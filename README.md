@@ -1,4 +1,4 @@
-# 🚀 Thierry Task & Schedule Management
+# 🚀 Thierry Task & Schedule Tracker
 
 Aplikasi web interaktif dan responsif untuk mengelola **Jadwal Pelajaran**, **Daftar Tugas Sekolah**, dan **Agenda Kegiatan** secara efisien. Dirancang dengan tampilan modern bertema *dark mode* serta dilengkapi dengan penyimpanan lokal (*LocalStorage*).
 
